@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define ALPHABET_SIZE 26
+
+// Function to encrypt the plaintext using polyalphabetic substitution cipher
+void polyalphabeticEncrypt(char plaintext[], const char key[]) {
+    int keyLen = strlen(key);
+    int keyIndex = 0;
+    int i;
+    for ( i = 0; plaintext[i] != '\0'; i++) {
+        if (isalpha(plaintext[i])) {
+            char base = isupper(plaintext[i]) ? 'A' : 'a';
+            int shift = toupper(key[keyIndex]) - 'A'; // Determine shift based on key
+
+            plaintext[i] = ((plaintext[i] - base + shift) % ALPHABET_SIZE) + base;
+
+            keyIndex = (keyIndex + 1) % keyLen; // Move to the next letter of the key
+        }
+    }
+}
+
+int main() {
+    char plaintext[100];
+    char key[100];
+
+    printf("Enter the plaintext: ");
+    fgets(plaintext, sizeof(plaintext), stdin);
+
+    printf("Enter the key: ");
+    fgets(key, sizeof(key), stdin);
+
+    // Remove newline characters
+    plaintext[strcspn(plaintext, "\n")] = '\0';
+    key[strcspn(key, "\n")] = '\0';
+
+    // Encrypt the plaintext using polyalphabetic substitution cipher
+    polyalphabeticEncrypt(plaintext, key);
+
+    printf("Encrypted text: %s\n", plaintext);
+
+    return 0;
+}
