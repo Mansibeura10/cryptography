@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <ctype.h>
+
+#define ALPHABET_SIZE 26
+
+// Function to encrypt text using the Caesar cipher
+void caesarEncrypt(char text[], int shift) {
+    for (int i = 0; text[i] != '\0'; i++) {
+        if (isalpha(text[i])) {
+            char base = isupper(text[i]) ? 'A' : 'a';
+            text[i] = ((text[i] - base + shift) % ALPHABET_SIZE) + base;
+        }
+    }
+}
+
+// Function to decrypt text using the Caesar cipher
+void caesarDecrypt(char text[], int shift) {
+    caesarEncrypt(text, ALPHABET_SIZE - (shift % ALPHABET_SIZE));
+}
+
+int main() {
+    char text[100];
+    int shift;
+
+    printf("Enter text to encrypt: ");
+    fgets(text, sizeof(text), stdin);
+
+    printf("Enter the shift value (1-25): ");
+    scanf("%d", &shift);
+
+    // Encrypting the entered text
+    caesarEncrypt(text, shift);
+    printf("Encrypted text: %s\n", text);
+
+    // Decrypting the encrypted text
+    caesarDecrypt(text, shift);
+    printf("Decrypted text: %s\n", text);
+
+    return 0;
+}
